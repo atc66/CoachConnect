@@ -165,6 +165,22 @@ router.post(
   }
 );
 
+// @route   DELETE api/profile
+// @desc    Remove profile
+// @access  Private
+
+router.delete(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Profile.findOneAndRemove({ user: req.user.id }).then(() => {
+      User.findOneAndRemove({ _id: req.user.id }).then(() =>
+        res.json({ success: true })
+      );
+    });
+  }
+);
+
 // @route   POST api/profile/experience
 // @desc    Create experience
 // @access  Private
