@@ -15,6 +15,27 @@ const User = require("../../models/User");
 // @access  Public route
 router.get("/test", (req, res) => res.json({ msg: "Profile Works" }));
 
+// @route   GET api/profile/all
+// @desc    get all profiles
+// @access  Public route
+
+router.get("/all", (req, res) => {
+  Profile.find()
+    .populate("user", ["name", "avatar"])
+    .then(profiles => {
+      if (!profiles) {
+        errors.noprofile = "There are no profiles";
+        return res.status(404).json(errors);
+      }
+      res.json(profiles);
+    })
+    .catch(err =>
+      res.status(404).json({
+        profile: "There are no profiles"
+      })
+    );
+});
+
 // @route   GET api/profile/handle/:handle
 // @desc    get profile by handle
 // @access  Public route
@@ -33,11 +54,11 @@ router.get("/handle/:handle", (req, res) => {
     .catch(err => res.status(404).json(err));
 });
 
-// @route   GET api/profile/user/:userid
+// @route   GET api/profile/user/:user_id
 // @desc    get profile by :userid
 // @access  Public route
 
-router.get("/user/:userid", (req, res) => {
+router.get("/user/:user_id", (req, res) => {
   const errors = {};
   Profile.findOne({ user: req.params.user_id })
     .populate("user", ["name", "avatar"])
