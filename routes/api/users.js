@@ -70,14 +70,16 @@ router.post("/login", (req, res) => {
   }
   const email = req.body.email;
   const password = req.body.password;
-  User.findOne({ email: email }).then(user => {
+  User.findOne({ email }).then(user => {
     if (!user) {
       errors.email = "User not found";
       return res.status(404).json(errors);
     }
     bcrypt.compare(password, user.password).then(isMatch => {
       if (isMatch) {
+        // User Match
         const payload = { id: user.id, name: user.name, avatar: user.avatar };
+        // Sign Token
         jwt.sign(
           payload,
           keys.secretOrKey,
@@ -97,7 +99,7 @@ router.post("/login", (req, res) => {
   });
 });
 
-// @route   POST api/users/current
+// @route   GET api/users/current
 // @desc    Return current user
 // @access  Private
 
