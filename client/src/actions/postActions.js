@@ -6,7 +6,8 @@ import {
   GET_POSTS,
   GET_POST,
   POST_LOADING,
-  DELETE_POST
+  DELETE_POST,
+  ADD_COMMENT
 } from "./types";
 
 // Add Post
@@ -16,6 +17,24 @@ export const addPost = postData => dispatch => {
     .then(res =>
       dispatch({
         type: ADD_POST,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
+// ADD comment
+export const addComment = (postId, commentData) => dispatch => {
+  axios
+    .post(`/api/posts/comment/${postId}`, commentData)
+    .then(res =>
+      dispatch({
+        type: GET_POST,
         payload: res.data
       })
     )
