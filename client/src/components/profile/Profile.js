@@ -27,14 +27,17 @@ class Profile extends Component {
           <div className="row">
             <div className="col-md-6">
               <Link to="/profiles" className="btn btn-light mb-3 float-left">
-                Back To Profile
+                Back To List of Developers
               </Link>
             </div>
             <div className="col-md-6" />
           </div>
           <ProfileHeader profile={profile} />
-          <ProfileAbout />
-          <ProfileCreds />
+          <ProfileAbout profile={profile} />
+          <ProfileCreds
+            education={profile.education}
+            experience={profile.experience}
+          />
           <ProfileGithub />
         </div>
       );
