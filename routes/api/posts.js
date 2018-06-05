@@ -58,11 +58,6 @@ router.post(
       user: req.user.id
     });
 
-    console.log(req.user.id);
-    console.log(req.body.name);
-    console.log(req.body.text);
-    console.log(req.body.avatar);
-
     newPost.save().then(post => res.json(post));
   }
 );
